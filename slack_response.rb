@@ -10,7 +10,7 @@ class SlackResponse
 - /akashide help
 ```
 in:出勤 / out:退勤
-*YOUR_TOKEN*はAkashiの<https://atnd.ak4.jp/mypage/tokens|ウェブサイト>から取得したトークンに置き換えてください
+*YOUR_TOKEN* はAkashiの<https://atnd.ak4.jp/mypage/tokens|ウェブサイト>から取得したトークンに置き換えてください
 EOF
 
   def initialize(akashi_response = {})
