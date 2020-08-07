@@ -25,7 +25,7 @@ EOF
 
   def akashi_message
     if akashi_response['success']
-      { text: '打刻成功！', response_type: 'in_channel' }
+      { text: '打刻成功！', response_type: 'in_channel', replace_original: true }
     else
       {
         text: "打刻に失敗しました。。 (#{akashi_response['errors']})"
