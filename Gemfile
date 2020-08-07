@@ -9,7 +9,7 @@ gem 'httparty'
 gem 'rack'
 gem 'redis'
 gem 'sinatra'
-
+gem 'sinatra-contrib'
 group :test do
   gem 'mock_redis'
   gem 'rack-test'

@@ -5,6 +5,7 @@ require 'json'
 require 'httparty'
 require 'mock_redis'
 require 'sinatra'
+require "sinatra/json"
 require 'redis'
 require 'dotenv/load'
 require 'rspec'
