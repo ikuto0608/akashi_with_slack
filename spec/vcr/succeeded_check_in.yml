@@ -1,0 +1,52 @@
+---
+http_interactions:
+- request:
+    method: post
+    uri: https://atnd.ak4.jp/api/cooperation/TEST999/stamps
+    body:
+      encoding: UTF-8
+      string: token=833ab2e9-5a21-4cf9-9328-175027f0b291&type=11
+    headers:
+      Accept-Encoding:
+      - gzip;q=1.0,deflate;q=0.6,identity;q=0.3
+      Accept:
+      - "*/*"
+      User-Agent:
+      - Ruby
+  response:
+    status:
+      code: 200
+      message: OK
+    headers:
+      Server:
+      - nginx
+      Date:
+      - Fri, 07 Aug 2020 04:55:23 GMT
+      Content-Type:
+      - application/json; charset=utf-8
+      Transfer-Encoding:
+      - chunked
+      Connection:
+      - keep-alive
+      X-Frame-Options:
+      - SAMEORIGIN
+      X-Xss-Protection:
+      - 1; mode=block
+      X-Content-Type-Options:
+      - nosniff
+      Cache-Control:
+      - no-cache, no-store, max-age=0, must-revalidate
+      Pragma:
+      - no-cache
+      Expires:
+      - Fri, 01 Jan 1990 00:00:00 GMT
+      X-Request-Id:
+      - 5b5067da-c9e7-4a7c-80db-dd1a56dcbe91
+      X-Runtime:
+      - '0.342797'
+    body:
+      encoding: UTF-8
+      string: '{"success":true,"response":{"login_company_code":"TEST999","staff_id":216644,"type":11,"stampedAt":"2020/08/07
+        13:55:23","alertCount":null,"overtimeExceeded":null}}'
+  recorded_at: Fri, 07 Aug 2020 04:55:23 GMT
+recorded_with: VCR 6.0.0

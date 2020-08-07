@@ -1,23 +1,54 @@
 require File.expand_path '../spec_helper.rb', __FILE__
 
 describe '#POST' do
+  let!(:default_params) {
+    { command: 'akashide', token: 'SLACK_TOKEN', user_id: 'ABC123' }
+  }
+
+  before(:each) { allow(Redis).to receive(:new).and_return(MockRedis.new) }
+
   context 'init action' do
-    let!(:params) { { text: 'init USER_TOKEN', command: 'akashide' }.to_json }
+    let!(:params) { default_params.merge(text: 'init USER_TOKEN').to_json }
+    let!(:expected_json) { { 'text' => '打刻する準備ができました！' } }
+
+    it 'returns expected response' do
+      post '/', params
+      expect(last_response.status).to eq(200)
+      expect(JSON.parse(last_response.body)).to eq(expected_json)
+    end
   end
 
   context 'check in action' do
-    let!(:params) { { text: 'in', command: 'akashide' }.to_json }
+    let!(:params) { default_params.merge(text: 'in').to_json }
+    let!(:expected_json) { { 'text' => '打刻成功！' } }
+
+    it 'returns expected response' do
+      VCR.use_cassette 'succeeded_check_in' do
+        post '/', params
+        expect(last_response.status).to eq(200)
+        expect(JSON.parse(last_response.body)).to eq(expected_json)
+      end
+    end
   end
 
   context 'check out action' do
-    let!(:params) { { text: 'out', command: 'akashide' }.to_json }
+    let!(:params) { default_params.merge(text: 'out').to_json }
+    let!(:expected_json) { { 'text' => '打刻成功！' } }
+
+    it 'returns expected response' do
+      VCR.use_cassette 'succeeded_check_out' do
+        post '/', params
+        expect(last_response.status).to eq(200)
+        expect(JSON.parse(last_response.body)).to eq(expected_json)
+      end
+    end
   end
 
   context 'help action' do
-    let!(:params) { { text: 'help', command: 'akashide' }.to_json }
+    let!(:params) { default_params.merge(text: 'help').to_json }
     let!(:expected_json) {
       {
-        text: <<EOF
+        'text' => <<EOF
 コマンド一覧
 '''
 - /akashide init YOUR_TOKEN
@@ -36,6 +67,7 @@ EOF
     it 'returns expected response' do
       post '/', params
       expect(last_response.status).to eq(200)
+      expect(JSON.parse(last_response.body)).to eq(expected_json)
     end
   end
 

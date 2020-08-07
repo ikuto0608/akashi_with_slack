@@ -1,35 +1,38 @@
 # frozen_string_literal: true
 
+set :logger, Logger.new(STDOUT)
+
 post '/' do
   params = JSON.parse(request.body.read)
+  token = params.delete('token')
+  logger.info params
 
-  return status 403 if params['token'] != AkashiWithSlack::Config::SLACK_TOKEN
+  return status 403 if token != AkashiWithSlack::Config::SLACK_TOKEN
   return status 403 if params['command'] != AkashiWithSlack::Config::COMMAND_NAME
 
   action, user_token = params['text'].split(' ')
 
   case action
   when AkashiWithSlack::Command::INIT
-    params['user_id']
-  when AkashiWithSlack::Command::CHECK_IN
-    params['user_id']
-  when AkashiWithSlack::Command::CHECK_OUT
-    params['user_id']
-  when AkashiWithSlack::Command::HELP
-<<EOF
-コマンド一覧
-'''
-- /akashide init YOUR_TOKEN
-- /akashide in
-- /akashide out
-- /akashide help
-'''
+    return SlackResponse.new.message('トークンが見つかりませんでした。') if user_token.nil?
 
-init: Akashiのウェブサイトから取得したトークンを一緒に送ってください
-in: 出勤
-out: 退勤
-EOF
+    redis = Redis.new(url: ENV['REDIS_URL'])
+    redis.set(params['user_id'], user_token)
+
+    SlackResponse.new.init_message
+  when AkashiWithSlack::Command::CHECK_IN
+    akashi = Akashi.new(params['user_id'])
+    res = akashi.check_in
+
+    SlackResponse.new(res).akashi_message
+  when AkashiWithSlack::Command::CHECK_OUT
+    akashi = Akashi.new(params['user_id'])
+    res = akashi.check_out
+
+    SlackResponse.new(res).akashi_message
+  when AkashiWithSlack::Command::HELP
+    SlackResponse.new.help_message
   else
-    params['user_id']
+    SlackResponse.new.help_message
   end
 end
