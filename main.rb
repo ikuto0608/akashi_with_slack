@@ -17,7 +17,13 @@ post '/' do
     return SlackResponse.new.message('トークンが見つかりませんでした。') if user_token.nil?
 
     redis = Redis.new(url: ENV['REDIS_URL'])
-    redis.set(params['user_id'], user_token)
+    redis.set(
+      params['user_id'],
+      {
+        user_token: user_token,
+        expired_at: Time.now + (30 * 24 * 60 * 60)
+      }.to_json
+    )
 
     json(
       SlackResponse.new.init_message,
@@ -28,6 +34,8 @@ post '/' do
     akashi = Akashi.new(params['user_id'])
     res = akashi.check_in
 
+    akashi.reissue_token! if akashi.expires_soon?
+
     json(
       SlackResponse.new(res).akashi_message,
       encoder: :to_json,
@@ -36,6 +44,8 @@ post '/' do
   when AkashiWithSlack::Command::CHECK_OUT
     akashi = Akashi.new(params['user_id'])
     res = akashi.check_out
+
+    akashi.reissue_token! if akashi.expires_soon?
 
     json(
       SlackResponse.new(res).akashi_message,
