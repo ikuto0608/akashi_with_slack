@@ -1,3 +1,5 @@
+# frozen_string_literal: true
+
 class SlackResponse
   attr_reader :akashi_response
 
@@ -10,7 +12,7 @@ class SlackResponse
 - /akashide help
 ```
 in:出勤 / out:退勤
-*YOUR_TOKEN* はAkashiの<https://atnd.ak4.jp/mypage/tokens|ウェブサイト>から取得したトークンに置き換えてください
+*YOUR_TOKEN* はAKASHIの<https://atnd.ak4.jp/mypage/tokens|ウェブサイト>から取得したトークンに置き換えてください
 EOF
 
   def initialize(akashi_response = {})
@@ -25,9 +27,7 @@ EOF
     if akashi_response['success']
       { text: ENV['SUCCESS_MESSAGE'], response_type: 'in_channel' }
     else
-      {
-        text: "打刻に失敗しました。。 (#{akashi_response['errors']})"
-      }.to_json
+      { text: "打刻に失敗しました。。 (#{akashi_response['errors']})" }
     end
   end
 

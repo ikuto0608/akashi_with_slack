@@ -16,9 +16,7 @@ class Akashi
   def reissue_token
     self.class.post(
       "#{self.class.base_uri}/token/reissue/#{AkashiWithSlack::Config::AKASHI_COMPANY_ID}",
-      {
-        body: { token: user_token }
-      }
+      body: { token: user_token }
     )
   end
 

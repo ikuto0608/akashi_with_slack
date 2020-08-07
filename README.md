@@ -16,7 +16,7 @@ Create your app in https://api.slack.com/apps which configures a slash command,
 ```
 Command: /akashide
 Request URL: YOUR HEROKU APP URL
-Short Description: Manage checking in/out on Akashi
+Short Description: Manage checking in/out on AKASHI
 Usage Hint: help [or init, in, out]
 ```
 This app has to have *commands permission* .
