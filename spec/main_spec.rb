@@ -1,8 +1,9 @@
 require File.expand_path '../spec_helper.rb', __FILE__
 
 describe '#POST' do
+  let!(:user_id) { 'ABC123' }
   let!(:default_params) {
-    'command=/akashide&token=SLACK_TOKEN&user_id=ABC123'
+    "command=/akashide&token=SLACK_TOKEN&user_id=#{user_id}"
   }
 
   before(:each) { allow(Redis).to receive(:new).and_return(MockRedis.new) }
@@ -22,6 +23,16 @@ describe '#POST' do
     let!(:params) { default_params + '&text=in' }
     let!(:expected_json) { { 'text' => ENV['SUCCESS_MESSAGE'], 'response_type' => 'in_channel' } }
 
+    before(:each) do
+      Redis.new.set(
+        user_id,
+        {
+          user_token: 'ab3f456e-4ed3-4e2b-87a7-19932bad5ad2',
+          expired_at: Time.now + 30 * 24 * 60 * 60
+        }.to_json
+      )
+    end
+
     it 'returns expected response' do
       VCR.use_cassette 'succeeded_check_in' do
         post '/', params
@@ -34,6 +45,16 @@ describe '#POST' do
   context 'check out action' do
     let!(:params) { default_params + '&text=out' }
     let!(:expected_json) { { 'text' => ENV['SUCCESS_MESSAGE'], 'response_type' => 'in_channel' } }
+
+    before(:each) do
+      Redis.new.set(
+        user_id,
+        {
+          user_token: 'ab3f456e-4ed3-4e2b-87a7-19932bad5ad2',
+          expired_at: Time.now + 30 * 24 * 60 * 60
+        }.to_json
+      )
+    end
 
     it 'returns expected response' do
       VCR.use_cassette 'succeeded_check_out' do

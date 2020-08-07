@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 set :logger, Logger.new(STDOUT)
-set :json_content_type, :js
 
 post '/' do
   token = params.delete('token')
