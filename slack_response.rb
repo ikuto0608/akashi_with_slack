@@ -3,12 +3,12 @@ class SlackResponse
 
   HELP_MESSAGE = <<EOF
 コマンド一覧
-'''
+```
 - /akashide init YOUR_TOKEN
 - /akashide in
 - /akashide out
 - /akashide help
-'''
+```
 
 init: Akashiのウェブサイトから取得したトークンを一緒に送ってください
 in: 出勤
