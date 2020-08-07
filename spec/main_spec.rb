@@ -2,13 +2,13 @@ require File.expand_path '../spec_helper.rb', __FILE__
 
 describe '#POST' do
   let!(:default_params) {
-    { command: 'akashide', token: 'SLACK_TOKEN', user_id: 'ABC123' }
+    'command=/akashide&token=SLACK_TOKEN&user_id=ABC123'
   }
 
   before(:each) { allow(Redis).to receive(:new).and_return(MockRedis.new) }
 
   context 'init action' do
-    let!(:params) { default_params.merge(text: 'init USER_TOKEN').to_json }
+    let!(:params) { default_params + '&text=init USER_TOKEN' }
     let!(:expected_json) { { 'text' => '打刻する準備ができました！' } }
 
     it 'returns expected response' do
@@ -19,7 +19,7 @@ describe '#POST' do
   end
 
   context 'check in action' do
-    let!(:params) { default_params.merge(text: 'in').to_json }
+    let!(:params) { default_params + '&text=in' }
     let!(:expected_json) { { 'text' => '打刻成功！' } }
 
     it 'returns expected response' do
@@ -32,7 +32,7 @@ describe '#POST' do
   end
 
   context 'check out action' do
-    let!(:params) { default_params.merge(text: 'out').to_json }
+    let!(:params) { default_params + '&text=out' }
     let!(:expected_json) { { 'text' => '打刻成功！' } }
 
     it 'returns expected response' do
@@ -45,7 +45,7 @@ describe '#POST' do
   end
 
   context 'help action' do
-    let!(:params) { default_params.merge(text: 'help').to_json }
+    let!(:params) { default_params + '&text=help' }
     let!(:expected_json) {
       {
         'text' => <<EOF
@@ -72,7 +72,7 @@ EOF
   end
 
   context 'when having empty params' do
-    let!(:params) { {}.to_json }
+    let!(:params) { '' }
 
     it 'returns 403' do
       post '/', params
@@ -81,7 +81,7 @@ EOF
   end
 
   context 'when token unmatched' do
-    let!(:params) { { token: 'UNMATCHED_TOKEN' }.to_json }
+    let!(:params) { 'token=UNMATCHED_TOKEN' }
 
     it 'returns 403' do
       post '/', params
@@ -90,7 +90,7 @@ EOF
   end
 
   context 'when having invalid command name' do
-    let!(:params) { { command: 'invalid_command' }.to_json }
+    let!(:params) { 'command=invalid_command' }
 
     it 'returns 403' do
       post '/', params
