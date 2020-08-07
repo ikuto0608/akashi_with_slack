@@ -8,7 +8,7 @@ cd /path/to/akashi_with_slack
 heroku create
 git push heroku master
 ```
-- Set these environemnet variables; `AKASHI_COMPANY_ID` & `SLACK_TOKEN` & `SUCCESS_MESSAGE` in Heroku's Config Vars
+- Set these environment variables; `AKASHI_COMPANY_ID` & `SLACK_TOKEN` & `SUCCESS_MESSAGE` in Heroku's Config Vars
 - Add redis as Heroku's Add-ons
 
 ### Slack configuration
