@@ -20,7 +20,7 @@ describe '#POST' do
 
   context 'check in action' do
     let!(:params) { default_params + '&text=in' }
-    let!(:expected_json) { { 'text' => '打刻成功！' } }
+    let!(:expected_json) { { 'text' => '打刻成功！', 'response_type' => 'in_channel' } }
 
     it 'returns expected response' do
       VCR.use_cassette 'succeeded_check_in' do
@@ -33,7 +33,7 @@ describe '#POST' do
 
   context 'check out action' do
     let!(:params) { default_params + '&text=out' }
-    let!(:expected_json) { { 'text' => '打刻成功！' } }
+    let!(:expected_json) { { 'text' => '打刻成功！', 'response_type' => 'in_channel' } }
 
     it 'returns expected response' do
       VCR.use_cassette 'succeeded_check_out' do
