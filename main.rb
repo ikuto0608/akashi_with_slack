@@ -3,7 +3,6 @@
 set :logger, Logger.new(STDOUT)
 
 post '/' do
-  params = JSON.parse(request.body.read)
   token = params.delete('token')
   logger.info params
 
