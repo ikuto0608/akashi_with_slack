@@ -20,7 +20,7 @@ describe '#POST' do
 
   context 'check in action' do
     let!(:params) { default_params + '&text=in' }
-    let!(:expected_json) { { 'text' => '打刻成功！', 'response_type' => 'in_channel' } }
+    let!(:expected_json) { { 'text' => ENV['SUCCESS_MESSAGE'], 'response_type' => 'in_channel' } }
 
     it 'returns expected response' do
       VCR.use_cassette 'succeeded_check_in' do
@@ -33,7 +33,7 @@ describe '#POST' do
 
   context 'check out action' do
     let!(:params) { default_params + '&text=out' }
-    let!(:expected_json) { { 'text' => '打刻成功！', 'response_type' => 'in_channel' } }
+    let!(:expected_json) { { 'text' => ENV['SUCCESS_MESSAGE'], 'response_type' => 'in_channel' } }
 
     it 'returns expected response' do
       VCR.use_cassette 'succeeded_check_out' do
@@ -56,10 +56,8 @@ describe '#POST' do
 - /akashide out
 - /akashide help
 ```
-
-init: Akashiのウェブサイトから取得したトークンを一緒に送ってください
-in: 出勤
-out: 退勤
+in:出勤 / out:退勤
+*YOUR_TOKEN*はAkashiの<https://atnd.ak4.jp/mypage/tokens|ウェブサイト>から取得したトークンに置き換えてください
 EOF
       }
     }

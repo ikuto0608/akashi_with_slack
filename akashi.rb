@@ -23,21 +23,19 @@ class Akashi
   end
 
   def check_in
-    self.class.post(
-      "#{self.class.base_uri}/#{AkashiWithSlack::Config::AKASHI_COMPANY_ID}/stamps",
-      body: {
-        token: user_token,
-        type: CHECK_IN
-      }
-    )
+    stamp(CHECK_IN)
   end
 
   def check_out
+    stamp(CHECK_OUT)
+  end
+
+  def stamp(type)
     self.class.post(
       "#{self.class.base_uri}/#{AkashiWithSlack::Config::AKASHI_COMPANY_ID}/stamps",
       body: {
         token: user_token,
-        type: CHECK_OUT
+        type: type
       }
     )
   end

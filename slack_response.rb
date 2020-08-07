@@ -9,10 +9,8 @@ class SlackResponse
 - /akashide out
 - /akashide help
 ```
-
-init: Akashiのウェブサイトから取得したトークンを一緒に送ってください
-in: 出勤
-out: 退勤
+in:出勤 / out:退勤
+*YOUR_TOKEN*はAkashiの<https://atnd.ak4.jp/mypage/tokens|ウェブサイト>から取得したトークンに置き換えてください
 EOF
 
   def initialize(akashi_response = {})
@@ -25,7 +23,7 @@ EOF
 
   def akashi_message
     if akashi_response['success']
-      { text: ':white_check_mark:', response_type: 'in_channel', as_user: true }
+      { text: ENV['SUCCESS_MESSAGE'], response_type: 'in_channel' }
     else
       {
         text: "打刻に失敗しました。。 (#{akashi_response['errors']})"
