@@ -19,7 +19,7 @@ post '/' do
     redis = Redis.new(url: ENV['REDIS_URL'])
     redis.set(params['user_id'], user_token)
 
-    SlackResponse.new.init_message
+    json(SlackResponse.new.init_message, encoder: :to_json, content_type: :json)
   when AkashiWithSlack::Command::CHECK_IN
     akashi = Akashi.new(params['user_id'])
     res = akashi.check_in
@@ -31,8 +31,8 @@ post '/' do
 
     json(SlackResponse.new(res).akashi_message, encoder: :to_json, content_type: :json)
   when AkashiWithSlack::Command::HELP
-    SlackResponse.new.help_message
+    json(SlackResponse.new.help_message, encoder: :to_json, content_type: :json)
   else
-    SlackResponse.new.help_message
+    json(SlackResponse.new.help_message, encoder: :to_json, content_type: :json)
   end
 end

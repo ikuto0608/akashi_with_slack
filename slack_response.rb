@@ -20,7 +20,7 @@ EOF
   end
 
   def message(text)
-    { text: text }.to_json
+    text
   end
 
   def akashi_message
@@ -34,10 +34,10 @@ EOF
   end
 
   def init_message
-    { text: '打刻する準備ができました！' }.to_json
+    { text: '打刻する準備ができました！' }
   end
 
   def help_message
-    { text: HELP_MESSAGE }.to_json
+    { text: HELP_MESSAGE }
   end
 end
