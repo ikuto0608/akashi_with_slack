@@ -24,7 +24,25 @@ post '/' do
     akashi = Akashi.new(params['user_id'])
     res = akashi.check_in
 
-    json(SlackResponse.new(res).akashi_message, encoder: :to_json, content_type: :js)
+    json(
+      {
+    "blocks": [
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": "*It's 80 degrees right now.*"
+            }
+        },
+        {
+            "type": "section",
+            "text": {
+                "type": "mrkdwn",
+                "text": "Partly cloudy today and tomorrow"
+            }
+        }
+    ]
+}, encoder: :to_json, content_type: :js)
   when AkashiWithSlack::Command::CHECK_OUT
     akashi = Akashi.new(params['user_id'])
     res = akashi.check_out

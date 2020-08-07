@@ -24,7 +24,6 @@ EOF
   end
 
   def akashi_message
-    puts akashi_response
     if akashi_response['success']
       { text: '打刻成功！', response_type: 'in_channel' }
     else
