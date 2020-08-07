@@ -3,7 +3,7 @@
 module AkashiWithSlack
   class Config
     SLACK_TOKEN = ENV['SLACK_TOKEN']
-    COMMAND_NAME = 'akashide'
+    COMMAND_NAME = '/akashide'
     AKASHI_COMPANY_ID = ENV['AKASHI_COMPANY_ID']
   end
 
