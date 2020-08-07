@@ -26,7 +26,7 @@ EOF
   def akashi_message
     puts akashi_response
     if akashi_response['success']
-      { text: '打刻成功！' }.to_json
+      { text: '打刻成功！', response_type: 'in_channel' }.to_json
     else
       {
         text: "打刻に失敗しました。。 (#{akashi_response['errors']})"
