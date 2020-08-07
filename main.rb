@@ -24,12 +24,12 @@ post '/' do
     akashi = Akashi.new(params['user_id'])
     res = akashi.check_in
 
-    SlackResponse.new(res).akashi_message
+    json(SlackResponse.new(res).akashi_message, encoder: :to_json, content_type: :js)
   when AkashiWithSlack::Command::CHECK_OUT
     akashi = Akashi.new(params['user_id'])
     res = akashi.check_out
 
-    SlackResponse.new(res).akashi_message
+    json(SlackResponse.new(res).akashi_message, encoder: :to_json, content_type: :js)
   when AkashiWithSlack::Command::HELP
     SlackResponse.new.help_message
   else
