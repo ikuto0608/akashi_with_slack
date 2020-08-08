@@ -34,11 +34,11 @@ class Akashi
     expired_at < Time.now + (10 * 24 * 60 * 60)
   end
 
-  def check_in
+  def check_in!
     stamp(CHECK_IN)
   end
 
-  def check_out
+  def check_out!
     stamp(CHECK_OUT)
   end
 

@@ -31,7 +31,7 @@ post '/' do
     )
   when AkashiWithSlack::Command::CHECK_IN
     akashi = Akashi.new(params['user_id'])
-    res = akashi.check_in
+    res = akashi.check_in!
 
     akashi.reissue_token! if akashi.expires_soon?
 
@@ -42,7 +42,7 @@ post '/' do
     )
   when AkashiWithSlack::Command::CHECK_OUT
     akashi = Akashi.new(params['user_id'])
-    res = akashi.check_out
+    res = akashi.check_out!
 
     akashi.reissue_token! if akashi.expires_soon?
 
