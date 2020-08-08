@@ -77,7 +77,8 @@ describe '#POST' do
 - /akashide out
 - /akashide help
 ```
-in:出勤 / out:退勤
+`in` : 出勤 / `out` : 退勤
+まずは `init` で自分のトークンを設定するところから。それから打刻が可能になります。
 *YOUR_TOKEN* はAKASHIの<https://atnd.ak4.jp/mypage/tokens|ウェブサイト>から取得したトークンに置き換えてください
 EOF
       }
