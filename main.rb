@@ -31,6 +31,8 @@ post '/' do
     )
   when AkashiWithSlack::Command::CHECK_IN
     akashi = Akashi.new(params['user_id'])
+    return SlackResponse.new.message('打刻できませんでした、トークンを設定してください。') unless akashi.user_token?
+
     res = akashi.check_in!
 
     akashi.reissue_token! if akashi.expires_soon?
@@ -42,6 +44,8 @@ post '/' do
     )
   when AkashiWithSlack::Command::CHECK_OUT
     akashi = Akashi.new(params['user_id'])
+    return SlackResponse.new.message('打刻できませんでした、トークンを設定してください。') unless akashi.user_token?
+
     res = akashi.check_out!
 
     akashi.reissue_token! if akashi.expires_soon?

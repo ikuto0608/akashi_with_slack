@@ -15,6 +15,14 @@ class Akashi
     @user_id = user_id
   end
 
+  def user_token?
+    !user_token.nil?
+  end
+
+  def expires_soon?
+    expired_at < Time.now + (10 * 24 * 60 * 60)
+  end
+
   def reissue_token!
     res = self.class.post(
       "#{self.class.base_uri}/token/reissue/#{AkashiWithSlack::Config::AKASHI_COMPANY_ID}",
@@ -28,10 +36,6 @@ class Akashi
         expired_at: res['response']['expired_at']
       }.to_json
     )
-  end
-
-  def expires_soon?
-    expired_at < Time.now + (10 * 24 * 60 * 60)
   end
 
   def check_in!

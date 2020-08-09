@@ -23,21 +23,33 @@ describe '#POST' do
     let!(:params) { default_params + '&text=in' }
     let!(:expected_json) { { 'text' => ENV['SUCCESS_MESSAGE'], 'response_type' => 'in_channel' } }
 
-    before(:each) do
-      Redis.new.set(
-        user_id,
-        {
-          user_token: 'ab3f456e-4ed3-4e2b-87a7-19932bad5ad2',
-          expired_at: Time.now + 30 * 24 * 60 * 60
-        }.to_json
-      )
+    context 'when token found' do
+      before(:each) do
+        Redis.new.set(
+          user_id,
+          {
+            user_token: 'ab3f456e-4ed3-4e2b-87a7-19932bad5ad2',
+            expired_at: Time.now + 30 * 24 * 60 * 60
+          }.to_json
+        )
+      end
+
+      it 'returns expected response' do
+        VCR.use_cassette 'succeeded_check_in' do
+          post '/', params
+          expect(last_response.status).to eq(200)
+          expect(JSON.parse(last_response.body)).to eq(expected_json)
+        end
+      end
     end
 
-    it 'returns expected response' do
-      VCR.use_cassette 'succeeded_check_in' do
+    context 'when token not found' do
+      let!(:expected_text) { '打刻できませんでした、トークンを設定してください。' }
+
+      it 'returns expected response' do
         post '/', params
         expect(last_response.status).to eq(200)
-        expect(JSON.parse(last_response.body)).to eq(expected_json)
+        expect(last_response.body).to eq(expected_text)
       end
     end
   end
@@ -46,21 +58,33 @@ describe '#POST' do
     let!(:params) { default_params + '&text=out' }
     let!(:expected_json) { { 'text' => ENV['SUCCESS_MESSAGE'], 'response_type' => 'in_channel' } }
 
-    before(:each) do
-      Redis.new.set(
-        user_id,
-        {
-          user_token: 'ab3f456e-4ed3-4e2b-87a7-19932bad5ad2',
-          expired_at: Time.now + 30 * 24 * 60 * 60
-        }.to_json
-      )
+    context 'when token found' do
+      before(:each) do
+        Redis.new.set(
+          user_id,
+          {
+            user_token: 'ab3f456e-4ed3-4e2b-87a7-19932bad5ad2',
+            expired_at: Time.now + 30 * 24 * 60 * 60
+          }.to_json
+        )
+      end
+
+      it 'returns expected response' do
+        VCR.use_cassette 'succeeded_check_out' do
+          post '/', params
+          expect(last_response.status).to eq(200)
+          expect(JSON.parse(last_response.body)).to eq(expected_json)
+        end
+      end
     end
 
-    it 'returns expected response' do
-      VCR.use_cassette 'succeeded_check_out' do
+    context 'when token not found' do
+      let!(:expected_text) { '打刻できませんでした、トークンを設定してください。' }
+
+      it 'returns expected response' do
         post '/', params
         expect(last_response.status).to eq(200)
-        expect(JSON.parse(last_response.body)).to eq(expected_json)
+        expect(last_response.body).to eq(expected_text)
       end
     end
   end
